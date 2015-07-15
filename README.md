@@ -1,6 +1,6 @@
 frontend-nanodegree-arcade-game
 ===============================
-This project involves one player facing 4 enemies as player crosses the road to get to water. This game has simple functionality of pressed arrow keys up, down, left, right. it also includes a reset button to restart the game. 
+This project involves one player facing 5 enemies as player crosses the road to get to water. This game has simple functionality of pressed arrow keys up, down, left, right. it also includes a reset button to restart the game. 
 
 
 
