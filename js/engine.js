@@ -46,7 +46,7 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         update(dt); // needs to have a parameter
-        render(dt);
+        render();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -64,7 +64,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -95,16 +95,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update(dt);
+        player.update();
     }
-
-
-    function checkCollisions() {
-        allEnemies.forEach(function(enemyinarray) {
-            enemyinarray.checkCollisions();
-        });
-    }
-
+    
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
@@ -168,9 +161,9 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
+   // function reset() {
         // noop
-    }
+   // }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when

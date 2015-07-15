@@ -4,6 +4,7 @@ body {
 }
 
 button {
-
-	
+	color: black;
+    border-radius: 4px;
+    font-size: 150%;
 }
