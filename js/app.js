@@ -1,18 +1,23 @@
-// here are some information regarding status of the game 
-var notice  = "GAME OVER";
-var notice1 = 'HORRAY, You Made it!!';
-var notice2 = 'Good Luck!';
-var notice3 = "Press Restart to Play Again";
+// Here are some Constants of the game
+NOTICE_GAME_OVER  = "GAME OVER";
+NOTICE_SUCCESS    = 'HORRAY, You Made it!!';
+NOTICE_GENERIC    = 'Good Luck!';
+NOTICE_RESTART    = "Press Restart to Play Again";
+Y_AT_RANDOM       = [60, 227, 310];
+X_AT_RANDOM       = [-400, -200, 0, 100, 200];
 
 /* 
 * This is an Enemy Class that contains within itself reference to the image, 
 * its location on the canvas, speed and dimension hit box. parameters come from 
 * instantiated objects
+* This function generates random speed and starting poing for enemies at browser 
+* refresh or restart. it accecepts min and maximum speed range.
 */
-var Enemy = function(xLoc, yLoc, speed) {
+var Enemy = function() {
+    var speed = Math.random() * (400 - 70) + 70;
     this.sprite = 'images/enemy-bug.png';
-    this.xLoc = xLoc;
-    this.yLoc = yLoc;
+    this.xLoc = X_AT_RANDOM[Math.floor(Math.random() * 4)];
+    this.yLoc = Y_AT_RANDOM[Math.floor(Math.random() * 3)];
     this.speed = speed;
     this.width = 60;
     this.height = 40;
@@ -27,13 +32,11 @@ var Enemy = function(xLoc, yLoc, speed) {
 */
 Enemy.prototype.update = function(dt){
     if(this.xLoc < 600){
-        this.xLoc = this.xLoc + (this.speed * dt)
+        this.xLoc = this.xLoc + (this.speed * dt);
     } else {
-        this.xLoc = -110
+        this.xLoc = -110;
     }
 };
-
-
 
 /* Draw the enemy on the screen. This prototype renders image from its class
 * and the location is rendered from the updated xLoc. yLoc. coordinates all this is
@@ -52,32 +55,24 @@ Enemy.prototype.render = function() {
 * ememy and player. Once it identifies that there is no space between 2 characters,
 * the game ends, player disappears and 2 notices appear on the screen 
 * indicating that the game is over, and reset button may be pressed to play the game
+* this function checks against each enemy in array to see if collision occured 
 */
-Enemy.prototype.checkCollisions = function() {
-    if (this.yLoc < player.height + player.yLoc &&
-        this.height + this.yLoc > player.yLoc &&
-        this.xLoc < player.width + player.xLoc  &&
-        this.width + this.xLoc > player.xLoc) {
+
+function checkCollisions() {
+    allEnemies.forEach(function(enemyinarray) {
+        if (enemyinarray.yLoc < player.height + player.yLoc &&
+            enemyinarray.height + enemyinarray.yLoc > player.yLoc &&
+            enemyinarray.xLoc < player.width + player.xLoc  &&
+            enemyinarray.width + enemyinarray.xLoc > player.xLoc) {
             var el = document.getElementById('game');
-                el.innerHTML = notice;
+                el.innerHTML = NOTICE_GAME_OVER;
             var elb = document.getElementById('game1');
-                elb.innerHTML = notice3;
-        // this.reset();
-/* i wanted to use reset(); to stop the game but it kept throwing me error
-* Uncaught TypeError: this.reset is not a function.
-* but after spending several days over the issue, i desided to move player
-* off canvas as far as possible;
+                elb.innerHTML = NOTICE_RESTART;       
+/* On impact, player is moved off canvas as far as possible;
 */
             player.xLoc = 10000;
             player.yLoc = 10000;
-    }
-};
-
-/* this function checks against each enemy in array to see if collision occured */
-
-function checkCollisions() {
-        allEnemies.forEach(function(enemyinarray) {
-            enemyinarray.checkCollisions();
+        }
     });
 }
 
@@ -104,16 +99,14 @@ var Player = function() {
 *
 */
 Player.prototype.update = function() {
-    this.xLoc;
-    this.yLoc;
-    if(this.yLoc < 10){   
+    if(this.yLoc < 10){
         var el1 = document.getElementById('game');
-        el1.innerHTML = notice1;
+        el1.innerHTML = NOTICE_SUCCESS;
         this.xLoc = 200;
         this.yLoc = 400;
         setTimeout(function(){
             var el2 = document.getElementById('game');
-                el2.innerHTML = notice2;
+                el2.innerHTML = NOTICE_GENERIC;
         }, 1000);
     }
 };
@@ -145,13 +138,6 @@ Player.prototype.handleInput = function(key){
     }
 };
 
-/* This function generates random speed for enemies at browser refresh or restart
-* It accecepts min and maximum speed range.
-*/
-
-function randSpeed(min, max) {
-    return Math.random() * (max - min) + min;
-};
 
 /* Here all the objects get insantiated and assigned  to a variable. enemies get 
 * starting x.y coordinates and speed assigned to them. Enemies have random speed range that  
@@ -163,11 +149,11 @@ function randSpeed(min, max) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var player     = new Player();
-var enemy0     = new Enemy(-400, 60, randSpeed(300, 500));
-var enemy1     = new Enemy(0, 60, enemy0.speed);
-var enemy2     = new Enemy(100, 227, randSpeed(100, 400));
-var enemy3     = new Enemy(200, 310, randSpeed(250, 400));
-var enemy4     = new Enemy(-200, 310, enemy3.speed);
+var enemy0     = new Enemy();
+var enemy1     = new Enemy();
+var enemy2     = new Enemy();
+var enemy3     = new Enemy();
+var enemy4     = new Enemy();
 var allEnemies = [
     enemy0,
     enemy1,
